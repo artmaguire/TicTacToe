@@ -16,6 +16,7 @@ public:
 
 private:
     static void printWelcome();
+    static void help();
     static void initialise();
     static bool validate(int r, int c);
     static bool checkWin(int r, int c);

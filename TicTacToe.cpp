@@ -4,7 +4,7 @@
 int XO [3][3];
 int turn;
 int match;
-bool winner = false;
+bool winner = false, instructions = false;
 int player1, player2;
 
 void TicTacToe::initialise() {
@@ -17,6 +17,13 @@ void TicTacToe::initialise() {
 }
 
 void TicTacToe::printXO() {
+    if (instructions) {
+        cout << "\nRows go across (0-2)" << endl;
+        cout << "------------▷\n" << endl;
+        cout << "Columns go down (0-2)" << endl;
+        cout << "\t\t\t|\n" <<  "\t\t\t|\n" <<  "\t\t\t|\n" << "\t\t\t|\n" << "\t\t\t|\n" <<  "\t\t\t▽" << endl;
+    }
+
     cout << "----|---|----" << endl;
     cout << "| " << convert(XO[0][0]) << " | " << convert(XO[0][1]) << " | " << convert(XO[0][2]) << " |" << endl;
     cout << "|-----------|" << endl;
@@ -29,6 +36,9 @@ void TicTacToe::printXO() {
 bool TicTacToe::validate(int r, int c) {
     if (r < 0 || r > 2) return false;
     if (c < 0 || c > 2) return false;
+    if (static_cast<char>(r) == 'q' || static_cast<char>(c) == 'q') { //Check for quit command
+        exit(0);
+    }
 
     return XO[r][c] == -1;
 }
@@ -99,6 +109,9 @@ void TicTacToe::run() {
                 cin >> row;
                 cout << "Select a column on the board: " << endl;
                 cin >> column;
+
+                cout <<(char)row << "\n" << static_cast<char>(column) << endl;
+
                 if (validate(row, column)) {
                     break;
                 } else {
@@ -145,25 +158,47 @@ void TicTacToe::run() {
 void TicTacToe::printWelcome() {
     bool type = false;
     int x = 0;
-    char ans;
+    char ans, inst;
 
     cout << "Welcome to Tic Tac Toe!\n" << endl;
 
-    while (!type) {
-        cout << "Select a game type!" << endl;
-        cout << "Best of (1-5)" << endl;
-        cin >> x;
+    cout << "Would you like game instructions? (y/n)\n";
+    cin >> inst;
+    cout << endl;
 
-        if (x < 1 || x > 5) {
-            type = false;
-            cout << "Invalid Input!" << endl;
-        } else {
+    if (inst == 'y') {
+        help();
+        instructions = true;
+    } else if (inst == 'n') {
+        while (!type) {
+            cout << "Select a game type!" << endl;
+            cout << "Best of (1-5)" << endl;
+            cin >> x;
 
-            cout << "Are you sure you want Best of " << x << "? (y/n)" << endl;
-            cin >> ans;
+            if (x < 1 || x > 5) {
+                type = false;
+                cout << "Invalid Input!" << endl;
+            } else {
 
-            type = ans == 'y';
+                cout << "Are you sure you want Best of " << x << "? (y/n)" << endl;
+                cin >> ans;
+
+                if (ans == 'q')
+                    exit(0);
+
+                type = ans == 'y';
+            }
         }
+        match = x;
+    } else {
+        cout << "Invalid input." << endl;
     }
-    match = x;
+}
+
+void TicTacToe::help() {
+    cout << "How to play." << endl;
+    printXO();
+    cout << endl;
+
+    cout << "To quit type 'q' between game play or at the start." << endl;
 }
