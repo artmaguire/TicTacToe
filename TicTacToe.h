@@ -1,7 +1,3 @@
-//
-// Created by aelni on 16/02/2019.
-//
-
 #ifndef TICTACTOE_TICTACTOE_H
 #define TICTACTOE_TICTACTOE_H
 
@@ -16,6 +12,7 @@ public:
 
 private:
     static void printWelcome();
+    static void printExample();
     static void help();
     static void initialise();
     static bool validate(int r, int c);

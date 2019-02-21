@@ -18,10 +18,22 @@ void TicTacToe::initialise() {
 
 void TicTacToe::printXO() {
     if (instructions) {
+        char ans;
+
         cout << "\nRows go across (0-2)" << endl;
         cout << "------------▷\n" << endl;
         cout << "Columns go down (0-2)" << endl;
-        cout << "\t\t\t|\n" <<  "\t\t\t|\n" <<  "\t\t\t|\n" << "\t\t\t|\n" << "\t\t\t|\n" <<  "\t\t\t▽" << endl;
+        cout << "\t\t\t|\n" << "\t\t\t|\n" << "\t\t\t|\n" << "\t\t\t|\n" << "\t\t\t|\n" << "\t\t\t▽" << endl;
+
+        cout << "\nTo quit type 'q' between game play or at the start." << endl;
+
+        cout << "\nWould you like an example? (y/n)" << endl;
+        cin >> ans;
+        if (ans == 'y') {
+            printExample();
+        } else if (ans == 'q') {
+            exit(0);
+        }
     }
 
     cout << "----|---|----" << endl;
@@ -102,15 +114,21 @@ void TicTacToe::run() {
 
         while (!winner) {
             cout << convert(turn) << "'s turn" << endl;
-            int column;
-            int row;
+            string c;
+            string r;
+            int row, column;
             while (true) {
                 cout << "Select a row on the board: " << endl;
-                cin >> row;
+                cin >> r;
                 cout << "Select a column on the board: " << endl;
-                cin >> column;
+                cin >> c;
 
-                cout <<(char)row << "\n" << static_cast<char>(column) << endl;
+                if (r == "q" || c == "q") {
+                    exit(0);
+                } else {
+                    row = stoi(r);
+                    column = stoi(c);
+                }
 
                 if (validate(row, column)) {
                     break;
@@ -199,6 +217,22 @@ void TicTacToe::help() {
     cout << "How to play." << endl;
     printXO();
     cout << endl;
+}
 
-    cout << "To quit type 'q' between game play or at the start." << endl;
+void TicTacToe::printExample() {
+    cout << "\nHere is an Example." << endl;
+
+    cout << "row = 1" << endl;
+    cout << "column = 1" << endl;
+
+    cout << "----|---|----" << endl;
+    cout << "| " << " " << " | " << " " << " | " << " " << " |" << endl;
+    cout << "|-----------|" << endl;
+    cout << "| " << " " << " | " << "X" << " | " << " " << " |" << endl;
+    cout << "|-----------|" << endl;
+    cout << "| " << " " << " | " << " " << " | " << " " << " |" << endl;
+    cout << "----|---|----" << endl;
+
+    instructions = false;
+    run();
 }
